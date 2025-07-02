@@ -29,7 +29,7 @@ const products = [
     subtitle: "CYBER JACKET PRO",
     description: "advanced protection technology",
     price: "189,99 €",
-    leftImage: "/images/sansa.png",
+    leftImage: "/images/subi.png",
     rightImage: "/images/sansa.png",
     centerImage: "/images/sansa.png",
   },
@@ -99,80 +99,13 @@ export default function Component() {
 
       {/* Main Content */}
       <div className="relative h-screen flex items-center">
-        {/* Left Product Image */}
-        <div className="absolute left-0 top-0 h-full w-1/4 flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`left-${currentProduct}`}
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-              className="relative"
-            >
-              <Image
-                src={product.leftImage || "/sansa.png"}
-                alt="Product Left View"
-                width={700}
-                height={900}
-                className="object-cover"
-              />
-            </motion.div>
-            4
-          </AnimatePresence>
-        </div>
-
-        {/* Right Product Image */}
-        <div className="absolute right-0 top-0 h-full w-1/4 flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`right-${currentProduct}`}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 100 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-              className="relative"
-            >
-              <Image
-                src={product.rightImage || "/sansa.png"}
-                alt="Product Right View"
-                width={900}
-                height={500}
-                className="object-cover"
-              />
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Center Product Image */}
-        <div className="absolute right-0.5 left-0.5 top-0 col-span-4 flex justify-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`center-${currentProduct}`}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-              className="relative"
-            >
-              <Image
-                src={product.centerImage || "/sansa.png"}
-                alt="Product Center View"
-                width={900}
-                height={900}
-                className="object-cover"
-              />
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
         {/* Center Content */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-8">
           <div className="bg-gray-300 relative h-[480px]">
             <div className="grid grid-cols-12 gap-8 items-center p-8">
               {/* Product Info */}
               <div className="col-span-2 absolute left-1/7 top-1/2 transform -translate-y-10/13">
-                <div className="bg-lime-400 px-1 py-2 space-y-4 h-[300px]">
+                <div className="bg-[#E2FF58] px-1 py-2 space-y-4 h-[300px] opacity-70">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={`title-${currentProduct}`}
@@ -202,13 +135,12 @@ export default function Component() {
 
               {/* Empty space for center image */}
               <div className="col-span-4"></div>
-              
 
               {/* Product Description */}
               <div className="col-span-3">
                 <div className="space-y-4">
-                  
-                  <AnimatePresence mode="wait">
+                  <div className="absolute left-10/15 top-1/5 transform -translate-y-1/12 z-30">
+                    <AnimatePresence mode="wait">
                       <motion.p
                         key={`desc-${currentProduct}`}
                         initial={{ opacity: 0, y: 20 }}
@@ -220,66 +152,68 @@ export default function Component() {
                         {product.description}
                       </motion.p>
                     </AnimatePresence>
+                  </div>
 
                   {/* Size Selector */}
-                  <div className="absolute left-10/15 top-10/11 transform -translate-y-1/12">
-                  <div className="bg-black text-white p-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">SIZE</span>
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                          className="text-lime-400 hover:text-lime-300 transition-colors"
-                        >
-                          <Minus className="w-4 h-4" />
-                        </button>
-                        <span className="text-lime-400 font-medium">
-                          {quantity}
-                        </span>
-                        <button
-                          onClick={() => setQuantity(quantity + 1)}
-                          className="text-lime-400 hover:text-lime-300 transition-colors"
-                        >
-                          <Plus className="w-4 h-4" />
-                        </button>
+                  <div className="absolute left-10/15 top-10/11 transform -translate-y-1/12 z-30">
+                    <div className="bg-black text-white p-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">SIZE</span>
+                        <div className="flex items-center space-x-2">
+                          <button
+                            onClick={() =>
+                              setQuantity(Math.max(1, quantity - 1))
+                            }
+                            className="text-[#E2FF58] hover:text-lime-300 transition-colors"
+                          >
+                            <Minus className="w-4 h-4 cursor-pointer" />
+                          </button>
+                          <span className="text-[#E2FF58] font-medium">
+                            {quantity}
+                          </span>
+                          <button
+                            onClick={() => setQuantity(quantity + 1)}
+                            className="text-[#E2FF58] hover:text-lime-300 transition-colors"
+                          >
+                            <Plus className="w-4 h-4 cursor-pointer" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Buy Button */}
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={`price-${currentProduct}`}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.4, delay: 0.3 }}
-                      className="bg-lime-400 hover:bg-lime-500 transition-colors duration-200 cursor-pointer group"
-                    >
-                      <div className="flex items-center justify-between p-4">
-                        <div>
-                          <span className="text-black font-bold text-sm">
-                            BUY NOW
-                          </span>
-                          <span className="text-black font-bold text-lg ml-2">
-                            {product.price}
-                          </span>
+                    {/* Buy Button */}
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={`price-${currentProduct}`}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                        className="bg-[#E2FF58] hover:bg-yellow-100 transition-colors duration-200 cursor-pointer group opacity-70"
+                      >
+                        <div className="flex items-center justify-between p-4">
+                          <div>
+                            <span className="text-black font-bold text-sm">
+                              BUY NOW
+                            </span>
+                            <span className="text-black font-bold text-lg ml-2">
+                              {product.price}
+                            </span>
+                          </div>
+                          <ChevronRight className="w-5 h-5 text-black group-hover:translate-x-1 transition-transform duration-200" />
                         </div>
-                        <ChevronRight className="w-5 h-5 text-black group-hover:translate-x-1 transition-transform duration-200" />
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
-
                 </div>
               </div>
             </div>
 
             {/* Left Arrow - positioned at the left edge of gray container */}
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
+            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-30">
               <motion.button
                 onClick={prevProduct}
-                className="bg-lime-400 hover:bg-lime-500 p-4 transition-colors duration-200 shadow-lg"
+                className="bg-[#E2FF58] hover:bg-lime-200 p-4 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -288,16 +222,82 @@ export default function Component() {
             </div>
 
             {/* Right Arrow - positioned at the right edge of gray container */}
-            <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-30">
               <motion.button
                 onClick={nextProduct}
-                className="bg-lime-400 hover:bg-lime-500 p-4 transition-colors duration-200 shadow-lg"
+                className="bg-[#E2FF58] hover:bg-lime-200 p-4 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <ChevronRight className="w-6 h-6 text-black" />
               </motion.button>
             </div>
+          </div>
+
+          {/* Left Product Image */}
+          <div className="absolute left-0 top-0 h-full w-1/4 flex items-center justify-center transform -translate-x-1/2 z-20">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`left-${currentProduct}`}
+                initial={{ opacity: 0, x: -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="relative"
+              >
+                <Image
+                  src={product.leftImage || "/sansa.png"}
+                  alt="Product Left View"
+                  width={700}
+                  height={480}
+                  className="h-[480px] w-auto object-cover"
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Right Product Image */}
+          <div className="absolute right-0 top-0 h-full w-1/4 flex items-center justify-center transform translate-x-1/2 z-20">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`right-${currentProduct}`}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 100 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="relative"
+              >
+                <Image
+                  src={product.rightImage || "/sansa.png"}
+                  alt="Product Right View"
+                  width={900}
+                  height={500}
+                  className="h-[480px] w-auto object-cover"
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Center Product Image */}
+          <div className="absolute right-0.5 left-0.5 top-0 col-span-4 flex justify-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`center-${currentProduct}`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="relative"
+              >
+                <Image
+                  src={product.centerImage || "/sansa.png"}
+                  alt="Product Center View"
+                  width={900}
+                  height={900}
+                  className="object-cover"
+                />
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
