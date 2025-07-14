@@ -137,7 +137,7 @@ export default function Component() {
               <div className="col-span-4"></div>
 
               {/* Product Description */}
-              <div className="col-span-3">
+              <div className="col-span-5">
                 <div className="space-y-4">
                   <div className="absolute left-10/15 top-1/5 transform -translate-y-1/12 z-30">
                     <AnimatePresence mode="wait">
@@ -189,7 +189,7 @@ export default function Component() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.4, delay: 0.3 }}
-                        className="bg-[#E2FF58] hover:bg-yellow-100 transition-colors duration-200 cursor-pointer group opacity-70"
+                        className="bg-[#E2FF58] transition-colors duration-200 cursor-pointer group opacity-70"
                       >
                         <div className="flex items-center justify-between p-4">
                           <div>
@@ -213,7 +213,7 @@ export default function Component() {
             <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-30">
               <motion.button
                 onClick={prevProduct}
-                className="bg-[#E2FF58] hover:bg-lime-200 p-4 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
+                className="bg-[#E2FF58] p-4 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -225,7 +225,7 @@ export default function Component() {
             <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-30">
               <motion.button
                 onClick={nextProduct}
-                className="bg-[#E2FF58] hover:bg-lime-200 p-4 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
+                className="bg-[#E2FF58] p-4 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -279,7 +279,7 @@ export default function Component() {
           </div>
 
           {/* Center Product Image */}
-          <div className="absolute right-0.5 left-0.5 top-0 col-span-4 flex justify-center">
+          <div className="absolute right-0.5 left-0.5 top-0 bottom-6 col-span-4 flex justify-center z-10">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`center-${currentProduct}`}
@@ -287,14 +287,14 @@ export default function Component() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="relative"
+                className="relative flex items-center justify-center"
               >
                 <Image
                   src={product.centerImage || "/sansa.png"}
                   alt="Product Center View"
                   width={900}
                   height={900}
-                  className="object-cover"
+                  className="h-[750px] max-w-full object-contain"
                 />
               </motion.div>
             </AnimatePresence>
