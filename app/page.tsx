@@ -11,6 +11,26 @@ import {
   Minus,
 } from "lucide-react";
 import Image from "next/image";
+import { Oswald } from "next/font/google";
+import { Black_Ops_One } from "next/font/google";
+import { Michroma } from "next/font/google";
+import { Smooch_Sans } from "next/font/google";
+import { Overpass } from "next/font/google";
+
+const overpass = Overpass({
+  subsets: ["latin"],
+})
+const smoosh = Smooch_Sans({
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const oswald = Oswald({ subsets: ["latin"] });
+const blackOpsOne = Black_Ops_One({
+  subsets: ["latin"],
+  weight: "400"
+});
+const michroma = Michroma({ subsets: ["latin"], weight: "400" });
 
 const products = [
   {
@@ -62,7 +82,7 @@ export default function Component() {
   return (
     <div className="min-h-screen relative bg-white overflow-hidden overflow-x-hidden">
       {/* Header */}
-      <header className="relative z-50 flex items-center justify-between px-6 py-4 backdrop-blur-sm">
+      <header className="relative z-50 flex items-center justify-between px-6 py-4">
         <div className="flex items-center space-x-8">
           <div className="text-2xl font-bold transform -skew-x-12 text-black px-3 py-1">
             ⚡
@@ -104,7 +124,7 @@ export default function Component() {
           <div className="bg-gray-300 relative h-[480px]">
             <div className="grid grid-cols-12 gap-8 items-center p-8">
               {/* Product Info */}
-              <div className="col-span-2 absolute left-1/7 top-1/2 transform -translate-y-10/13">
+              <div className="col-span-2 absolute left-1/6 top-1/2 transform -translate-y-10/13">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`title-${currentProduct}`}
@@ -114,17 +134,17 @@ export default function Component() {
                     transition={{ duration: 0.4 }}
                   >
                   <div className="px-1 py-2">
-                      <h1 className="w-full px-2 text-3xl font-bold text-white bg-black">
+                      <h1 className={`w-full px-2 text-[25px] font-bold text-white bg-black ${blackOpsOne.className}`}>
                         {product.name}
                       </h1>
                         <div className="relative w-full h-80 text-black bg-[#E2FF58] opacity-70 ">
-                          <p className="absolute top-1/9 left-10/13 transform rotate-90 origin-left text-md font-bold whitespace-nowrap mx-auto my-auto">
+                          <p className="absolute top-1/9 left-10/14 transform rotate-90 origin-left text-md font-extrabold whitespace-nowrap mx-auto my-auto">
                             SHELL HOOD WORLD
                           </p>
-                          <p className="absolute top-1/9 left-10/17 transform rotate-90 origin-left text-xs whitespace-nowrap">
+                          <p className={`absolute top-1/9 left-10/20 transform rotate-90 origin-left text-sm whitespace-nowrap ${overpass.className}`}>
                             COMPLETE LOOK COLLECTION
                           </p>
-                          <p className="absolute top-1/9 left-10/23 transform rotate-90 origin-left text-xs whitespace-nowrap">
+                          <p className={`absolute top-1/9 left-10/30 transform rotate-90 origin-left text-sm whitespace-nowrap ${overpass.className}`}>
                             ORGANIC COTTON BLEND
                           </p>
                         </div>
@@ -139,7 +159,7 @@ export default function Component() {
               {/* Product Description */}
               <div className="col-span-5">
                 <div className="space-y-4">
-                  <div className="absolute left-10/15 top-1/5 transform -translate-y-1/12 z-30">
+                  <div className="absolute left-10/16 top-10/23 w-32 transform -translate-y-1/12 z-30">
                     <AnimatePresence mode="wait">
                       <motion.p
                         key={`desc-${currentProduct}`}
@@ -155,9 +175,9 @@ export default function Component() {
                   </div>
 
                   {/* Size Selector */}
-                  <div className="absolute left-10/15 top-10/11 transform -translate-y-1/12 z-30">
-                    <div className="bg-black text-white p-3">
-                      <div className="flex items-center justify-between">
+                  <div className="absolute left-10/16 top-10/11 transform -translate-y-1/12 z-30 w-80">
+                    <div className="bg-black text-white p-3 w-full">
+                      <div className="flex items-center justify-around">
                         <span className="text-sm font-medium">SIZE</span>
                         <div className="flex items-center space-x-2">
                           <button
@@ -189,12 +209,12 @@ export default function Component() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.4, delay: 0.3 }}
-                        className="bg-[#E2FF58] transition-colors duration-200 cursor-pointer group opacity-70"
+                        className="bg-[#E2FF58] transition-colors duration-200 cursor-pointer group opacity-50 h-24"
                       >
-                        <div className="flex items-center justify-between p-4">
+                        <div className="flex items-center justify-around p-4 pt-8">
                           <div>
                             <span className="text-black font-bold text-sm">
-                              BUY NOW
+                              BUY NOW |
                             </span>
                             <span className="text-black font-bold text-lg ml-2">
                               {product.price}
@@ -210,10 +230,10 @@ export default function Component() {
             </div>
 
             {/* Left Arrow - positioned at the left edge of gray container */}
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-30">
+            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30">
               <motion.button
                 onClick={prevProduct}
-                className="bg-[#E2FF58] p-4 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
+                className="bg-[#E2FF58] p-7 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -222,10 +242,10 @@ export default function Component() {
             </div>
 
             {/* Right Arrow - positioned at the right edge of gray container */}
-            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-30">
+            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30">
               <motion.button
                 onClick={nextProduct}
-                className="bg-[#E2FF58] p-4 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
+                className="bg-[#E2FF58] p-7 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -249,8 +269,8 @@ export default function Component() {
                   src={product.leftImage || "/sansa.png"}
                   alt="Product Left View"
                   width={700}
-                  height={480}
-                  className="h-[480px] w-auto object-cover"
+                  height={600}
+                  className="h-[600px] w-auto object-cover"
                 />
               </motion.div>
             </AnimatePresence>
@@ -272,7 +292,7 @@ export default function Component() {
                   alt="Product Right View"
                   width={900}
                   height={500}
-                  className="h-[480px] w-auto object-cover"
+                  className="h-[600px] w-auto object-cover"
                 />
               </motion.div>
             </AnimatePresence>
@@ -294,7 +314,7 @@ export default function Component() {
                   alt="Product Center View"
                   width={900}
                   height={900}
-                  className="h-[750px] max-w-full object-contain"
+                  className="h-[850px] max-w-full object-contain"
                 />
               </motion.div>
             </AnimatePresence>
