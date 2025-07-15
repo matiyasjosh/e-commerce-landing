@@ -105,32 +105,32 @@ export default function Component() {
             <div className="grid grid-cols-12 gap-8 items-center p-8">
               {/* Product Info */}
               <div className="col-span-2 absolute left-1/7 top-1/2 transform -translate-y-10/13">
-                <div className="bg-[#E2FF58] px-1 py-2 space-y-4 h-[300px] opacity-70">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={`title-${currentProduct}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.4 }}
-                    >
-                      <h1 className="w-full px-2 text-xl font-bold text-white bg-black mb-2">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`title-${currentProduct}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                  <div className="px-1 py-2">
+                      <h1 className="w-full px-2 text-3xl font-bold text-white bg-black">
                         {product.name}
                       </h1>
-                      <div className="relative w-full h-48 text-sm text-black">
-                        <p className="absolute top-0 left-4 transform rotate-90 origin-left text-xs whitespace-nowrap">
-                          SHELL HOOD WORLD
-                        </p>
-                        <p className="absolute top-0 left-12 transform rotate-90 origin-left text-xs whitespace-nowrap">
-                          COMPLETE LOOK COLLECTION
-                        </p>
-                        <p className="absolute top-0 left-20 transform rotate-90 origin-left text-xs whitespace-nowrap">
-                          ORGANIC COTTON BLEND
-                        </p>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
+                        <div className="relative w-full h-80 text-black bg-[#E2FF58] opacity-70 ">
+                          <p className="absolute top-1/9 left-10/13 transform rotate-90 origin-left text-md font-bold whitespace-nowrap mx-auto my-auto">
+                            SHELL HOOD WORLD
+                          </p>
+                          <p className="absolute top-1/9 left-10/17 transform rotate-90 origin-left text-xs whitespace-nowrap">
+                            COMPLETE LOOK COLLECTION
+                          </p>
+                          <p className="absolute top-1/9 left-10/23 transform rotate-90 origin-left text-xs whitespace-nowrap">
+                            ORGANIC COTTON BLEND
+                          </p>
+                        </div>
+                  </div> 
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
               {/* Empty space for center image */}
