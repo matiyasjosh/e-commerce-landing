@@ -39,9 +39,9 @@ const products = [
     subtitle: "SHELL HOOD WORLD",
     description: "choosing an antiaging eye cream",
     price: "113,53 €",
-    leftImage: "/images/sabu.png",
-    rightImage: "/images/sansa.png",
-    centerImage: "/images/subi.png",
+    leftImage: "/images/DEMOBAZA_1.png",
+    rightImage: "/images/demobaza_2.png",
+    centerImage: "/images/center_demobazit_2.png",
   },
   {
     id: 2,
@@ -49,9 +49,9 @@ const products = [
     subtitle: "CYBER JACKET PRO",
     description: "advanced protection technology",
     price: "189,99 €",
-    leftImage: "/images/subi.png",
-    rightImage: "/images/sansa.png",
-    centerImage: "/images/sansa.png",
+    leftImage: "/images/demobaza_4.png",
+    rightImage: "/images/demobaza_3.png",
+    centerImage: "/images/center_demobazit.png",
   },
   {
     id: 3,
@@ -59,9 +59,9 @@ const products = [
     subtitle: "FUTURE COAT ELITE",
     description: "sustainable fashion innovation",
     price: "245,00 €",
-    leftImage: "/images/sansa.png",
-    rightImage: "/images/sansa.png",
-    centerImage: "/images/sabu.png",
+    leftImage: "/images/OVER-COAT.png",
+    rightImage: "/images/demobazit_1.png",
+    centerImage: "/images/demobazit_center.png",
   },
 ];
 
@@ -129,7 +129,7 @@ export default function Component() {
                   <motion.div
                     key={`title-${currentProduct}`}
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 0.8, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.4 }}
                   >
@@ -137,7 +137,7 @@ export default function Component() {
                       <h1 className={`w-full px-2 text-[25px] font-bold text-white bg-black ${blackOpsOne.className}`}>
                         {product.name}
                       </h1>
-                        <div className="relative w-full h-80 text-black bg-[#E2FF58] opacity-70 ">
+                        <div className="relative w-full h-80 text-black bg-[#E2FF58] z-30">
                           <p className="absolute top-1/9 left-10/14 transform rotate-90 origin-left text-md font-extrabold whitespace-nowrap mx-auto my-auto">
                             SHELL HOOD WORLD
                           </p>
@@ -299,7 +299,7 @@ export default function Component() {
           </div>
 
           {/* Center Product Image */}
-          <div className="absolute right-0.5 left-0.5 top-0 bottom-6 col-span-4 flex justify-center z-10">
+          <div className="absolute right-0.5 left-0.5 top-0 bottom-6 col-span-4 flex justify-center z-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`center-${currentProduct}`}
