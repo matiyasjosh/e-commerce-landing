@@ -49,12 +49,12 @@ export default function HomePage() {
             Contemporary Fashion Collection
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-            <Link href="/shop">
+            <Link href="/signup">
               <Button
                 size="lg"
                 className="bg-[#D4FF00] hover:bg-[#D4FF00]/90 text-foreground uppercase tracking-wider px-8"
               >
-                Explore Collection
+                Get Started
               </Button>
             </Link>
             <Link href="/signin">
