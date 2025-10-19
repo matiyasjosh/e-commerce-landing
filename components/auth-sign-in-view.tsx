@@ -1,7 +1,16 @@
-import { SignInForm } from "@/components/signin-form"
-import Link from "next/link"
+"use client"
 
-export default function SignInPage() {
+import type React from "react"
+
+import Link from "next/link"
+import { SignInForm } from "@/components/signin-form"
+
+interface SignInViewProps {
+  onSubmit: (e: React.FormEvent) => Promise<void>
+  isLoading: boolean
+}
+
+export function SignInView({ onSubmit, isLoading }: SignInViewProps) {
   return (
     <div className="min-h-screen flex">
       {/* Left side - Image/Brand */}
@@ -39,11 +48,11 @@ export default function SignInPage() {
             <p className="text-muted-foreground">Sign in to your account</p>
           </div>
 
-          <SignInForm />
+          <SignInForm onSubmit={onSubmit} isLoading={isLoading} />
 
           <div className="mt-8 text-center text-sm">
             <span className="text-muted-foreground">Don't have an account? </span>
-            <Link href="/signup" className="font-medium hover:underline underline-offset-4">
+            <Link href="/auth?view=signup" className="font-medium hover:underline underline-offset-4">
               Sign up
             </Link>
           </div>

@@ -1,7 +1,16 @@
-import { SignUpForm } from "@/components/signup-form";
-import Link from "next/link";
+"use client"
 
-export default function SignUpPage() {
+import type React from "react"
+
+import Link from "next/link"
+import { SignUpForm } from "@/components/signup-form"
+
+interface SignUpViewProps {
+  onSubmit: (e: React.FormEvent) => Promise<void>
+  isLoading: boolean
+}
+
+export function SignUpView({ onSubmit, isLoading }: SignUpViewProps) {
   return (
     <div className="min-h-screen flex">
       {/* Left side - Form */}
@@ -13,27 +22,18 @@ export default function SignUpPage() {
                 <div className="w-8 h-8 bg-[#D4FF00] flex items-center justify-center">
                   <span className="text-foreground font-bold text-xl">D</span>
                 </div>
-                <span className="text-2xl font-bold tracking-[0.2em] uppercase">
-                  DEMOBAZA
-                </span>
+                <span className="text-2xl font-bold tracking-[0.2em] uppercase">DEMOBAZA</span>
               </div>
             </Link>
-            <h1 className="text-4xl font-bold tracking-tight mb-2">
-              Create Account
-            </h1>
+            <h1 className="text-4xl font-bold tracking-tight mb-2">Create Account</h1>
             <p className="text-muted-foreground">Join the future of fashion</p>
           </div>
 
-          <SignUpForm />
+          <SignUpForm onSubmit={onSubmit} isLoading={isLoading} />
 
           <div className="mt-8 text-center text-sm">
-            <span className="text-muted-foreground">
-              Already have an account?{" "}
-            </span>
-            <Link
-              href="/signin"
-              className="font-medium hover:underline underline-offset-4"
-            >
+            <span className="text-muted-foreground">Already have an account? </span>
+            <Link href="/auth?view=signin" className="font-medium hover:underline underline-offset-4">
               Sign in
             </Link>
           </div>
@@ -47,17 +47,11 @@ export default function SignUpPage() {
             <div className="absolute -top-20 -left-20 w-64 h-64 bg-[#D4FF00] opacity-20" />
             <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-[#D4FF00] opacity-20" />
             <div className="relative z-10 text-center space-y-6 p-12">
-              <h2 className="text-6xl font-bold tracking-[0.3em] uppercase">
-                SHELL HOOD WORLD
-              </h2>
-              <p className="text-xl tracking-wider uppercase text-muted-foreground">
-                Complete Look Collection
-              </p>
+              <h2 className="text-6xl font-bold tracking-[0.3em] uppercase">SHELL HOOD WORLD</h2>
+              <p className="text-xl tracking-wider uppercase text-muted-foreground">Complete Look Collection</p>
               <div className="pt-8">
                 <div className="inline-block bg-[#D4FF00] px-8 py-4">
-                  <span className="text-foreground font-bold tracking-wider uppercase">
-                    Organic Cotton Blend
-                  </span>
+                  <span className="text-foreground font-bold tracking-wider uppercase">Organic Cotton Blend</span>
                 </div>
               </div>
             </div>
@@ -65,5 +59,5 @@ export default function SignUpPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -25,12 +25,12 @@ export default function HomePage() {
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-            <Link href="/signin">
+            <Link href="/auth?view=signin">
               <Button variant="ghost" className="uppercase tracking-wider">
                 Sign In
               </Button>
             </Link>
-            <Link href="/signup">
+            <Link href="/auth?view=signup">
               <Button className="bg-[#D4FF00] hover:bg-[#D4FF00]/90 text-foreground uppercase tracking-wider">
                 Sign Up
               </Button>
@@ -57,7 +57,7 @@ export default function HomePage() {
                 Explore Collection
               </Button>
             </Link>
-            <Link href="/signin">
+            <Link href="/auth?view=signin">
               <Button size="lg" variant="outline" className="border-2 uppercase tracking-wider px-8 bg-transparent">
                 Sign In
               </Button>

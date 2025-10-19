@@ -1,26 +1,16 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import Link from "next/link"
 
-export function SignInForm() {
-  const [isLoading, setIsLoading] = useState(false)
-
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setIsLoading(true)
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
-  }
-
+export function SignInForm({
+  onSubmit,
+  isLoading = false,
+}: { onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>; isLoading?: boolean }) {
   return (
     <form onSubmit={onSubmit} className="space-y-6">
       <div className="space-y-4">
@@ -30,6 +20,7 @@ export function SignInForm() {
           </Label>
           <Input
             id="email"
+            name="email"
             placeholder="name@example.com"
             type="email"
             autoCapitalize="none"
@@ -55,6 +46,7 @@ export function SignInForm() {
           </div>
           <Input
             id="password"
+            name="password"
             placeholder="••••••••"
             type="password"
             autoCapitalize="none"

@@ -1,24 +1,79 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 
-export function SignUpForm() {
-  const [isLoading, setIsLoading] = useState(false)
+export function SignUpForm({
+  onSubmit,
+  isLoading = false,
+}: { onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>; isLoading?: boolean }) {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  })
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setIsLoading(true)
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
   }
+
+  const validateField = (name: string, value: string) => {
+    const newErrors = { ...errors }
+
+    if (name === "email") {
+      if (!value) {
+        newErrors.email = "Email is required"
+      } else if (!isValidEmail(value)) {
+        newErrors.email = "Please enter a valid email address"
+      } else {
+        delete newErrors.email
+      }
+    }
+
+    if (name === "password") {
+      if (!value) {
+        newErrors.password = "Password is required"
+      } else if (value.length < 8) {
+        newErrors.password = "Password must be at least 8 characters"
+      } else {
+        delete newErrors.password
+      }
+      // Check if passwords match when password changes
+      if (formData.confirmPassword && value !== formData.confirmPassword) {
+        newErrors.confirmPassword = "Passwords do not match"
+      } else if (formData.confirmPassword && value === formData.confirmPassword) {
+        delete newErrors.confirmPassword
+      }
+    }
+
+    if (name === "confirmPassword") {
+      if (!value) {
+        newErrors.confirmPassword = "Please confirm your password"
+      } else if (value !== formData.password) {
+        newErrors.confirmPassword = "Passwords do not match"
+      } else {
+        delete newErrors.confirmPassword
+      }
+    }
+
+    setErrors(newErrors)
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+    validateField(name, value)
+  }
+
+  const isFormValid =
+    formData.email && formData.password && formData.confirmPassword && Object.keys(errors).length === 0
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
@@ -30,6 +85,7 @@ export function SignUpForm() {
             </Label>
             <Input
               id="firstName"
+              name="firstName"
               placeholder="John"
               type="text"
               autoCapitalize="none"
@@ -46,6 +102,7 @@ export function SignUpForm() {
             </Label>
             <Input
               id="lastName"
+              name="lastName"
               placeholder="Doe"
               type="text"
               autoCapitalize="none"
@@ -64,6 +121,7 @@ export function SignUpForm() {
           </Label>
           <Input
             id="email"
+            name="email"
             placeholder="name@example.com"
             type="email"
             autoCapitalize="none"
@@ -71,8 +129,13 @@ export function SignUpForm() {
             autoCorrect="off"
             disabled={isLoading}
             required
-            className="border-2 focus-visible:ring-[#D4FF00] focus-visible:border-[#D4FF00]"
+            value={formData.email}
+            onChange={handleChange}
+            className={`border-2 focus-visible:ring-[#D4FF00] focus-visible:border-[#D4FF00] ${
+              errors.email ? "border-red-500" : ""
+            }`}
           />
+          {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
         </div>
 
         <div className="space-y-2">
@@ -81,14 +144,20 @@ export function SignUpForm() {
           </Label>
           <Input
             id="password"
+            name="password"
             placeholder="••••••••"
             type="password"
             autoCapitalize="none"
             autoComplete="new-password"
             disabled={isLoading}
             required
-            className="border-2 focus-visible:ring-[#D4FF00] focus-visible:border-[#D4FF00]"
+            value={formData.password}
+            onChange={handleChange}
+            className={`border-2 focus-visible:ring-[#D4FF00] focus-visible:border-[#D4FF00] ${
+              errors.password ? "border-red-500" : ""
+            }`}
           />
+          {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
         </div>
 
         <div className="space-y-2">
@@ -97,14 +166,20 @@ export function SignUpForm() {
           </Label>
           <Input
             id="confirmPassword"
+            name="confirmPassword"
             placeholder="••••••••"
             type="password"
             autoCapitalize="none"
             autoComplete="new-password"
             disabled={isLoading}
             required
-            className="border-2 focus-visible:ring-[#D4FF00] focus-visible:border-[#D4FF00]"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className={`border-2 focus-visible:ring-[#D4FF00] focus-visible:border-[#D4FF00] ${
+              errors.confirmPassword ? "border-red-500" : ""
+            }`}
           />
+          {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
         </div>
       </div>
 
@@ -129,7 +204,7 @@ export function SignUpForm() {
       <Button
         type="submit"
         className="w-full bg-[#D4FF00] hover:bg-[#D4FF00]/90 text-foreground font-bold uppercase tracking-wider h-12"
-        disabled={isLoading}
+        disabled={isLoading || !isFormValid}
       >
         {isLoading ? "Creating Account..." : "Create Account"}
       </Button>
