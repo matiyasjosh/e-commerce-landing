@@ -8,9 +8,10 @@ import { SignUpForm } from "@/components/signup-form"
 interface SignUpViewProps {
   onSubmit: (e: React.FormEvent) => Promise<void>
   isLoading: boolean
+  handleSocial: (provider: "google" | "apple") => Promise<void>
 }
 
-export function SignUpView({ onSubmit, isLoading }: SignUpViewProps) {
+export function SignUpView({ onSubmit, isLoading, handleSocial }: SignUpViewProps) {
   return (
     <div className="min-h-screen flex">
       {/* Left side - Form */}
@@ -29,7 +30,7 @@ export function SignUpView({ onSubmit, isLoading }: SignUpViewProps) {
             <p className="text-muted-foreground">Join the future of fashion</p>
           </div>
 
-          <SignUpForm onSubmit={onSubmit} isLoading={isLoading} />
+          <SignUpForm onSubmit={onSubmit} isLoading={isLoading} handleSocial={handleSocial}/>
 
           <div className="mt-8 text-center text-sm">
             <span className="text-muted-foreground">Already have an account? </span>

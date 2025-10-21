@@ -21,7 +21,7 @@ export default function AuthClientPage({
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleSocialAuth = async (provider: "google") => {
+  const handleSocialAuth = async (provider: "google" | "apple") => {
     setIsLoading(true);
     setError("");
 
@@ -89,9 +89,9 @@ export default function AuthClientPage({
   return (
     <>
       {isSignIn ? (
-        <SignInView onSubmit={handleEmailAuth} isLoading={isLoading} />
+        <SignInView onSubmit={handleEmailAuth} isLoading={isLoading} handleSocial={handleSocialAuth} />
       ) : (
-        <SignUpView onSubmit={handleEmailAuth} isLoading={isLoading} />
+        <SignUpView onSubmit={handleEmailAuth} isLoading={isLoading} handleSocial={handleSocialAuth}/>
       )}
 
       <AuthErrorDisplay error={error} />

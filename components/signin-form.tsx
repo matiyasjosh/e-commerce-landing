@@ -10,7 +10,8 @@ import Link from "next/link"
 export function SignInForm({
   onSubmit,
   isLoading = false,
-}: { onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>; isLoading?: boolean }) {
+  handleSocial
+}: { onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>; isLoading?: boolean; handleSocial: (provider: "google" | "apple") => Promise<void> }) {
   return (
     <form onSubmit={onSubmit} className="space-y-6">
       <div className="space-y-4">
@@ -88,6 +89,7 @@ export function SignInForm({
       <div className="grid grid-cols-2 gap-4">
         <Button
           type="button"
+          onClick={() => handleSocial("google")}
           variant="outline"
           disabled={isLoading}
           className="border-2 hover:border-[#D4FF00] hover:bg-[#D4FF00]/10 bg-transparent"
@@ -96,6 +98,7 @@ export function SignInForm({
         </Button>
         <Button
           type="button"
+          onClick={() => handleSocial("google")}
           variant="outline"
           disabled={isLoading}
           className="border-2 hover:border-[#D4FF00] hover:bg-[#D4FF00]/10 bg-transparent"

@@ -11,7 +11,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 export function SignUpForm({
   onSubmit,
   isLoading = false,
-}: { onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>; isLoading?: boolean }) {
+  handleSocial
+}: { onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>; isLoading?: boolean; handleSocial: (provider: "google" | "apple") => Promise<void> }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -221,6 +222,7 @@ export function SignUpForm({
       <div className="grid grid-cols-2 gap-4">
         <Button
           type="button"
+          onClick={() => handleSocial("google")}
           variant="outline"
           disabled={isLoading}
           className="border-2 hover:border-[#D4FF00] hover:bg-[#D4FF00]/10 bg-transparent"
@@ -229,6 +231,7 @@ export function SignUpForm({
         </Button>
         <Button
           type="button"
+          onClick={() => handleSocial("apple")}
           variant="outline"
           disabled={isLoading}
           className="border-2 hover:border-[#D4FF00] hover:bg-[#D4FF00]/10 bg-transparent"

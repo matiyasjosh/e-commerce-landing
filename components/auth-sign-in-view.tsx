@@ -8,9 +8,10 @@ import { SignInForm } from "@/components/signin-form"
 interface SignInViewProps {
   onSubmit: (e: React.FormEvent) => Promise<void>
   isLoading: boolean
+  handleSocial: (provider: "google" | "apple") => Promise<void>
 }
 
-export function SignInView({ onSubmit, isLoading }: SignInViewProps) {
+export function SignInView({ onSubmit, isLoading, handleSocial }: SignInViewProps) {
   return (
     <div className="min-h-screen flex">
       {/* Left side - Image/Brand */}
@@ -48,7 +49,7 @@ export function SignInView({ onSubmit, isLoading }: SignInViewProps) {
             <p className="text-muted-foreground">Sign in to your account</p>
           </div>
 
-          <SignInForm onSubmit={onSubmit} isLoading={isLoading} />
+          <SignInForm onSubmit={onSubmit} isLoading={isLoading} handleSocial={handleSocial}/>
 
           <div className="mt-8 text-center text-sm">
             <span className="text-muted-foreground">Don't have an account? </span>
