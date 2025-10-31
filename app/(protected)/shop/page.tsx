@@ -66,7 +66,7 @@ const products = [
   },
 ];
 
-export default function ShopClient({ session }: { session: any }) {
+export default function ShopClient() {
   const [currentProduct, setCurrentProduct] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
@@ -82,9 +82,6 @@ export default function ShopClient({ session }: { session: any }) {
 
   return (
     <div className="min-h-screen relative bg-white overflow-hidden overflow-x-hidden">
-      {/* Header */}
-      <Navbar session={session} />
-
       {/* Main Content */}
       <div className="relative h-screen flex items-center">
         {/* Center Content */}

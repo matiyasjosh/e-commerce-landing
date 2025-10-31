@@ -5,9 +5,6 @@ import Navbar from "@/components/navbar"
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Navbar session={null}/>
-
       {/* Hero */}
       <main className="flex-1 flex items-center justify-center bg-muted relative overflow-hidden">
         <div className="absolute top-20 left-20 w-48 h-48 bg-[#D4FF00] opacity-20" />
