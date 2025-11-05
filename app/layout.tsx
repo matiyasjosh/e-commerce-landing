@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { Toaster } from "react-hot-toast"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Navbar session={session} />
+        <Toaster />
         {children}
       </body>
     </html>
