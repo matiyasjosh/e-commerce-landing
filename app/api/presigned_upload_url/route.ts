@@ -9,7 +9,6 @@ export async function POST(request: Request) {
   const { filenames } = await request.json()
   const bucketName = 'my-nextjs-bucket';
   
-  
   try {
     const bucketExists: boolean = await minioClient.bucketExists(bucketName);
     if (!bucketExists) {

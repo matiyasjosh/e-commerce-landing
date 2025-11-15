@@ -42,6 +42,8 @@ export function useProductForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  // a key/toggle to force remounting child components (used to clear file inputs)
+  const [resetKey, setResetKey] = useState(0);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -145,9 +147,7 @@ export function useProductForm() {
 
       // upload all images in parallel
       await Promise.all(
-        urls.map((u: any, i: number) =>
-          axios.put(u.uploadUrl, imageFiles[i])
-        )
+        urls.map((u: any, i: number) => axios.put(u.uploadUrl, imageFiles[i]))
       );
 
       const imageUrls = urls.map((u: any) => u.fileUrl);
@@ -168,7 +168,7 @@ export function useProductForm() {
       await axios.post("/api/upload-product", productData);
 
       toast.success("Product uploaded successfully!");
-      setFormData(INITIAL_STATE); // Reset form using initial state
+      resetForm();
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Failed to upload product. Please try again.");
@@ -180,6 +180,9 @@ export function useProductForm() {
   const resetForm = () => {
     setFormData(INITIAL_STATE);
     setErrors({});
+    // increment resetKey so consumers can remount file inputs and clear internal state
+    setResetKey((k) => k + 1);
+    setSubmitSuccess(false);
   };
 
   // Return everything the component needs
@@ -188,6 +191,7 @@ export function useProductForm() {
     errors,
     isSubmitting,
     submitSuccess,
+    resetKey,
     handleInputChange,
     handleImageChange,
     handleSubmit,

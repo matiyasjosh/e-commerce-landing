@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeft,
@@ -16,7 +16,8 @@ import { Black_Ops_One } from "next/font/google";
 import { Michroma } from "next/font/google";
 import { Smooch_Sans } from "next/font/google";
 import { Overpass } from "next/font/google";
-import Navbar from "@/components/navbar";
+import { useShop } from "@/hooks/useShop";
+import axios from "axios";
 
 const overpass = Overpass({
   subsets: ["latin"],
@@ -33,52 +34,72 @@ const blackOpsOne = Black_Ops_One({
 });
 const michroma = Michroma({ subsets: ["latin"], weight: "400" });
 
-const products = [
-  {
-    id: 1,
-    name: "DEMOBAZA",
-    subtitle: "SHELL HOOD WORLD",
-    description: "choosing an antiaging eye cream",
-    price: "113,53 €",
-    leftImage: "/images/DEMOBAZA_1.png",
-    rightImage: "/images/demobaza_2.png",
-    centerImage: "/images/center_demobazit_2.png",
-  },
-  {
-    id: 2,
-    name: "VALENTINO",
-    subtitle: "CYBER JACKET PRO",
-    description: "advanced protection technology",
-    price: "189,99 €",
-    leftImage: "/images/demobaza_4.png",
-    rightImage: "/images/demobaza_3.png",
-    centerImage: "/images/center_demobazit.png",
-  },
-  {
-    id: 3,
-    name: "BALENCIAGA",
-    subtitle: "FUTURE COAT ELITE",
-    description: "sustainable fashion innovation",
-    price: "245,00 €",
-    leftImage: "/images/OVER-COAT.png",
-    rightImage: "/images/demobazit_1.png",
-    centerImage: "/images/demobazit_center.png",
-  },
-];
-
 export default function ShopClient() {
+  // Fetch products client-side (this is a client component). Avoid top-level await.
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    axios
+      .get("/api/fetch-product")
+      .then((res) => {
+        if (!mounted) return;
+        // API returns { products: [...] }
+        const payload = res?.data?.products ?? res?.data ?? [];
+        setProducts(Array.isArray(payload) ? payload : []);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error("Failed to fetch products:", err);
+        if (!mounted) return;
+        setFetchError(err?.message || "Failed to fetch products");
+      })
+      .finally(() => {
+        if (!mounted) return;
+        setLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
   const [currentProduct, setCurrentProduct] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  // const { handleFetch } = useShop();
+
+  // console.log('Products:', products);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500">Loading products...</p>
+      </div>
+    );
+  }
+
+  if (fetchError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-red-500">Error loading products: {fetchError}</p>
+      </div>
+    );
+  }
 
   const nextProduct = () => {
+    if (products.length === 0) return;
     setCurrentProduct((prev) => (prev + 1) % products.length);
   };
 
   const prevProduct = () => {
+    if (products.length === 0) return;
     setCurrentProduct((prev) => (prev - 1 + products.length) % products.length);
   };
 
-  const product = products[currentProduct];
+  const product = products[currentProduct] || {};
+  console.log('Current Product:', product);
 
   return (
     <div className="min-h-screen relative bg-white overflow-hidden overflow-x-hidden">
@@ -106,7 +127,7 @@ export default function ShopClient() {
                       </h1>
                       <div className="relative w-full h-80 text-black bg-[#E2FF58] z-30">
                         <p className="absolute top-1/9 left-10/14 transform rotate-90 origin-left text-md font-extrabold whitespace-nowrap mx-auto my-auto">
-                          SHELL HOOD WORLD
+                          {product.brandDesc1}
                         </p>
                         <p
                           className={`absolute top-1/9 left-10/20 transform rotate-90 origin-left text-sm whitespace-nowrap ${overpass.className}`}
@@ -140,7 +161,7 @@ export default function ShopClient() {
                         transition={{ duration: 0.4, delay: 0.2 }}
                         className="text-sm text-gray-600"
                       >
-                        {product.description}
+                        {product.shortDescription}
                       </motion.p>
                     </AnimatePresence>
                   </div>
@@ -237,7 +258,7 @@ export default function ShopClient() {
                 className="relative"
               >
                 <Image
-                  src={product.leftImage || "/sansa.png"}
+                  src={product.images[0]?.url}
                   alt="Product Left View"
                   width={700}
                   height={600}
@@ -259,7 +280,7 @@ export default function ShopClient() {
                 className="relative"
               >
                 <Image
-                  src={product.rightImage || "/sansa.png"}
+                  src={product.images[2]?.url}
                   alt="Product Right View"
                   width={900}
                   height={500}
@@ -281,7 +302,7 @@ export default function ShopClient() {
                 className="relative flex items-center justify-center"
               >
                 <Image
-                  src={product.centerImage || "/sansa.png"}
+                  src={product.images[1]?.url}
                   alt="Product Center View"
                   width={900}
                   height={900}

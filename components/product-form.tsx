@@ -19,6 +19,7 @@ export function ProductForm() {
     handleImageChange,
     handleSubmit,
     resetForm, // Get the reset function from the hook
+    resetKey,
   } = useProductForm();
 
   // The component is now just the JSX (the "view")
@@ -123,7 +124,9 @@ export function ProductForm() {
                   name={`brandDesc${num}`}
                   placeholder={`Enter brand description ${num}`}
                   value={
-                    formData[`brandDesc${num}` as keyof typeof formData] as string
+                    formData[
+                      `brandDesc${num}` as keyof typeof formData
+                    ] as string
                   }
                   onChange={handleInputChange}
                   className="border-2 focus-visible:ring-primary focus-visible:border-primary"
@@ -219,7 +222,7 @@ export function ProductForm() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[0, 1, 2].map((index) => (
               <ImageUpload
-                key={index}
+                key={`${index}-${resetKey}`}
                 index={index}
                 onImageChange={handleImageChange}
                 disabled={isSubmitting}
