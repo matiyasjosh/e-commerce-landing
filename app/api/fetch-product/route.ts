@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@/lib/generated/prisma";
 import { redis } from "@/lib/redis";
+import prisma from "@/lib/prisma";
 
-const prisma = new PrismaClient();
 
 const CACHE_KEY = "products_cache";
 const CACHE_TTL_SECONDS = 60; // adjust as needed
