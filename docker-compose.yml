@@ -17,12 +17,12 @@ services:
     image: redis:alpine
     container_name: redis
     ports:
-      - ${REDIS_SERVICE_PORT}
+      - 6379
   minio:
     image: quay.io/minio/minio:latest
     ports:
-      - ${MINIO_SERVICE_PORT}
-      - ${MINIO_UI_PORT}
+      - "9000:9000"
+      - "9001:9001"
     volumes:
       - minio_data:/data
     environment:
