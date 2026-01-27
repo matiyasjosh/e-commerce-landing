@@ -10,7 +10,7 @@ type Session = any;
 
 const Navbar = ({ session }: { session: Session | null }) => {
   return (
-    <header className="border-b">
+    <header className="bg-transparent">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-[#D4FF00] flex items-center justify-center">
@@ -20,26 +20,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
             DEMOBAZA
           </span>
         </Link>
-        <nav className="hidden md:flex items-center gap-8">
-          <Link
-            href="#"
-            className="text-sm uppercase tracking-wider hover:text-muted-foreground transition-colors"
-          >
-            Woman
-          </Link>
-          <Link
-            href="#"
-            className="text-sm uppercase tracking-wider hover:text-muted-foreground transition-colors"
-          >
-            Man
-          </Link>
-          <Link
-            href="#"
-            className="text-sm uppercase tracking-wider hover:text-muted-foreground transition-colors"
-          >
-            Collections
-          </Link>
-        </nav>
+        
         <div className="flex items-center gap-4">
           {!session ? (
             <>

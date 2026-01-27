@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import { headers } from "next/headers";
+import Footer from "@/components/landing/footer";
 import { auth } from "@/lib/auth";
 import { Toaster } from "react-hot-toast"
 
@@ -24,6 +25,7 @@ export default async function RootLayout({
         <Navbar session={session} />
         <Toaster />
         {children}
+        <Footer />
       </body>
     </html>
   );

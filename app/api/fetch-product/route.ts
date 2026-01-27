@@ -3,7 +3,7 @@ import { redis } from "@/lib/redis";
 import prisma from "@/lib/prisma";
 
 
-const CACHE_KEY = "products_cache";
+const CACHE_KEY = "products_cachea";
 const CACHE_TTL_SECONDS = 60; // adjust as needed
 
 export async function GET() {
@@ -47,7 +47,5 @@ export async function GET() {
       { error: "Internal server error" },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
