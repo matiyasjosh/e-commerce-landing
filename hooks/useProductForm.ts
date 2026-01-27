@@ -155,12 +155,12 @@ export function useProductForm() {
       const productData = {
         name: formData.productName,
         price: Number.parseFloat(formData.price),
-        shortDescription: formData.shortDescription,
-        brandDesc1: formData.brandDesc1,
-        brandDesc2: formData.brandDesc2,
-        brandDesc3: formData.brandDesc3,
+        shortdescription: formData.shortDescription,
+        branddesc1: formData.brandDesc1,
+        branddesc2: formData.brandDesc2,
+        branddesc3: formData.brandDesc3,
         tag: formData.tag,
-        categoryId: Number(formData.categoryId),
+        categoryid: Number(formData.categoryId),
         stock: Number(formData.stock),
         images: imageUrls,
       };
