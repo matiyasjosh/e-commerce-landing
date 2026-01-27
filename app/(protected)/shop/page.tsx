@@ -1,328 +1,40 @@
-"use client";
+import ProductCarouselClient from "@/components/product/product-carousel-client"
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Search,
-  ShoppingBag,
-  Plus,
-  Minus,
-} from "lucide-react";
-import Image from "next/image";
-import { Oswald } from "next/font/google";
-import { Black_Ops_One } from "next/font/google";
-import { Michroma } from "next/font/google";
-import { Smooch_Sans } from "next/font/google";
-import { Overpass } from "next/font/google";
-import { useShop } from "@/hooks/useShop";
-import axios from "axios";
+interface Product {
+  id: string;
+  name: string;
+  price: string;
+  shortDescription: string;
+  brandDesc1: string;
+  images: Array<{ url: string }>;
+}
 
-const overpass = Overpass({
-  subsets: ["latin"],
-});
-const smoosh = Smooch_Sans({
-  subsets: ["latin"],
-  weight: "400",
-});
+async function fetchProducts(): Promise<Product[]> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const res = await fetch(`${baseUrl}/api/fetch-product`);
+    if (!res.ok) {
+      throw new Error(`API error: ${res.status}`);
+    }
+    const data = await res.json();
+    const payload = data?.products ?? data ?? [];
+    return Array.isArray(payload) ? payload : [];
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+    return [];
+  }
+}
 
-const oswald = Oswald({ subsets: ["latin"] });
-const blackOpsOne = Black_Ops_One({
-  subsets: ["latin"],
-  weight: "400",
-});
-const michroma = Michroma({ subsets: ["latin"], weight: "400" });
+export default async function Page() {
+  const products = await fetchProducts();
 
-export default function ShopClient() {
-  // Fetch products client-side (this is a client component). Avoid top-level await.
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [fetchError, setFetchError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let mounted = true;
-    setLoading(true);
-    axios
-      .get("/api/fetch-product")
-      .then((res) => {
-        if (!mounted) return;
-        // API returns { products: [...] }
-        const payload = res?.data?.products ?? res?.data ?? [];
-        setProducts(Array.isArray(payload) ? payload : []);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.error("Failed to fetch products:", err);
-        if (!mounted) return;
-        setFetchError(err?.message || "Failed to fetch products");
-      })
-      .finally(() => {
-        if (!mounted) return;
-        setLoading(false);
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-  const [currentProduct, setCurrentProduct] = useState(0);
-  const [quantity, setQuantity] = useState(1);
-  // const { handleFetch } = useShop();
-
-  // console.log('Products:', products);
-
-  if (loading) {
+  if (products.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Loading products...</p>
+        <p className="text-gray-500 text-lg">No products available at the moment.</p>
       </div>
     );
   }
 
-  if (fetchError) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-red-500">Error loading products: {fetchError}</p>
-      </div>
-    );
-  }
-
-  const nextProduct = () => {
-    if (products.length === 0) return;
-    setCurrentProduct((prev) => (prev + 1) % products.length);
-  };
-
-  const prevProduct = () => {
-    if (products.length === 0) return;
-    setCurrentProduct((prev) => (prev - 1 + products.length) % products.length);
-  };
-
-  const product = products[currentProduct] || {};
-  console.log('Current Product:', product);
-
-  return (
-    <div className="min-h-screen relative bg-white overflow-hidden overflow-x-hidden">
-      {/* Main Content */}
-      <div className="relative h-screen flex items-center">
-        {/* Center Content */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-8">
-          <div className="bg-gray-300 relative h-[480px]">
-            <div className="grid grid-cols-12 gap-8 items-center p-8">
-              {/* Product Info */}
-              <div className="col-span-2 absolute left-1/6 top-1/2 transform -translate-y-10/13">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={`title-${currentProduct}`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 0.8, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <div className="px-1 py-2">
-                      <h1
-                        className={`w-full px-2 text-[25px] font-bold text-white bg-black ${blackOpsOne.className}`}
-                      >
-                        {product.name}
-                      </h1>
-                      <div className="relative w-full h-80 text-black bg-[#E2FF58] z-30">
-                        <p className="absolute top-1/9 left-10/14 transform rotate-90 origin-left text-md font-extrabold whitespace-nowrap mx-auto my-auto">
-                          {product.brandDesc1}
-                        </p>
-                        <p
-                          className={`absolute top-1/9 left-10/20 transform rotate-90 origin-left text-sm whitespace-nowrap ${overpass.className}`}
-                        >
-                          COMPLETE LOOK COLLECTION
-                        </p>
-                        <p
-                          className={`absolute top-1/9 left-10/30 transform rotate-90 origin-left text-sm whitespace-nowrap ${overpass.className}`}
-                        >
-                          ORGANIC COTTON BLEND
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* Empty space for center image */}
-              <div className="col-span-4"></div>
-
-              {/* Product Description */}
-              <div className="col-span-5">
-                <div className="space-y-4">
-                  <div className="absolute left-10/16 top-10/23 w-32 transform -translate-y-1/12 z-30">
-                    <AnimatePresence mode="wait">
-                      <motion.p
-                        key={`desc-${currentProduct}`}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.4, delay: 0.2 }}
-                        className="text-sm text-gray-600"
-                      >
-                        {product.shortDescription}
-                      </motion.p>
-                    </AnimatePresence>
-                  </div>
-
-                  {/* Size Selector */}
-                  <div className="absolute left-10/16 top-10/11 transform -translate-y-1/12 z-30 w-80">
-                    <div className="bg-black text-white p-3 w-full">
-                      <div className="flex items-center justify-around">
-                        <span className="text-sm font-medium">SIZE</span>
-                        <div className="flex items-center space-x-2">
-                          <button
-                            onClick={() =>
-                              setQuantity(Math.max(1, quantity - 1))
-                            }
-                            className="text-[#E2FF58] hover:text-lime-300 transition-colors"
-                          >
-                            <Minus className="w-4 h-4 cursor-pointer" />
-                          </button>
-                          <span className="text-[#E2FF58] font-medium">
-                            {quantity}
-                          </span>
-                          <button
-                            onClick={() => setQuantity(quantity + 1)}
-                            className="text-[#E2FF58] hover:text-lime-300 transition-colors"
-                          >
-                            <Plus className="w-4 h-4 cursor-pointer" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Buy Button */}
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`price-${currentProduct}`}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.4, delay: 0.3 }}
-                        className="bg-[#E2FF58] transition-colors duration-200 cursor-pointer group opacity-50 h-24"
-                      >
-                        <div className="flex items-center justify-around p-4 pt-8">
-                          <div>
-                            <span className="text-black font-bold text-sm">
-                              BUY NOW |
-                            </span>
-                            <span className="text-black font-bold text-lg ml-2">
-                              {product.price}
-                            </span>
-                          </div>
-                          <ChevronRight className="w-5 h-5 text-black group-hover:translate-x-1 transition-transform duration-200" />
-                        </div>
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Left Arrow - positioned at the left edge of gray container */}
-            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30">
-              <motion.button
-                onClick={prevProduct}
-                className="bg-[#E2FF58] p-7 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <ChevronLeft className="w-6 h-6 text-black" />
-              </motion.button>
-            </div>
-
-            {/* Right Arrow - positioned at the right edge of gray container */}
-            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30">
-              <motion.button
-                onClick={nextProduct}
-                className="bg-[#E2FF58] p-7 transition-colors duration-200 shadow-lg opacity-70 cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <ChevronRight className="w-6 h-6 text-black" />
-              </motion.button>
-            </div>
-          </div>
-
-          {/* Left Product Image */}
-          <div className="absolute left-0 top-0 h-full w-1/4 flex items-center justify-center transform -translate-x-1/2 z-20">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`left-${currentProduct}`}
-                initial={{ opacity: 0, x: -100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="relative"
-              >
-                <Image
-                  src={product.images[0]?.url}
-                  alt="Product Left View"
-                  width={700}
-                  height={600}
-                  className="h-[600px] w-auto object-cover"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Right Product Image */}
-          <div className="absolute right-0 top-0 h-full w-1/4 flex items-center justify-center transform translate-x-1/2 z-20">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`right-${currentProduct}`}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 100 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="relative"
-              >
-                <Image
-                  src={product.images[2]?.url}
-                  alt="Product Right View"
-                  width={900}
-                  height={500}
-                  className="h-[600px] w-auto object-cover"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Center Product Image */}
-          <div className="absolute right-0.5 left-0.5 top-0 bottom-6 col-span-4 flex justify-center z-20">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`center-${currentProduct}`}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="relative flex items-center justify-center"
-              >
-                <Image
-                  src={product.images[1]?.url}
-                  alt="Product Center View"
-                  width={900}
-                  height={900}
-                  className="h-[850px] max-w-full object-contain"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Social Icons */}
-        <div className="absolute bottom-8 right-8 space-y-4">
-          <div className="w-8 h-8 bg-black text-white flex items-center justify-center cursor-pointer hover:bg-gray-800 transition-colors">
-            <span className="text-xs font-bold">f</span>
-          </div>
-          <div className="w-8 h-8 bg-black text-white flex items-center justify-center cursor-pointer hover:bg-gray-800 transition-colors">
-            <span className="text-xs font-bold">@</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <ProductCarouselClient products={products} />;
 }
