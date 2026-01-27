@@ -1,17 +1,16 @@
 services:
-  mysql:
-    image: mysql:latest
-    container_name: mysql
-    restart: always
+  e_comm_db:
+    image: postgres:17.6
+    container_name: e-commerce-pg-db
+    restart: no
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      POSTGRES_DB: e_commerce
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qweasdzxc
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - pg_data:/var/lib/postgresql/data
     networks:
       - backend
   redis:
@@ -27,12 +26,12 @@ services:
     volumes:
       - minio_data:/data
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: "minioadmin"
+      MINIO_ROOT_PASSWORD: "minioadmin"
     command: server /data --console-address ":9001"
     
 volumes:
-  mysql_data:
+  pg_data:
   minio_data:
 
 networks:

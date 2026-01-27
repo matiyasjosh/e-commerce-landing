@@ -5,26 +5,26 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
   output   = "../lib/generated/prisma"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  name          String?
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  emailVerified Boolean   @default(false)
-  image         String?   @db.Text
   sessions      Session[]
   accounts      Account[]
 
+  @@unique([email])
   @@map("user")
 }
 
@@ -34,73 +34,76 @@ model Session {
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  ipAddress String?  @db.Text
-  userAgent String?  @db.Text
+  ipAddress String?
+  userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
+  @@index([userId])
   @@map("session")
 }
 
 model Account {
   id                    String    @id
-  accountId             String    @db.Text
-  providerId            String    @db.Text
+  accountId             String
+  providerId            String
   userId                String
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?   @db.Text
-  refreshToken          String?   @db.Text
-  idToken               String?   @db.Text
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
   accessTokenExpiresAt  DateTime?
   refreshTokenExpiresAt DateTime?
-  scope                 String?   @db.Text
-  password              String?   @db.Text
+  scope                 String?
+  password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
+  @@index([userId])
   @@map("account")
 }
 
 model Verification {
   id         String   @id
-  identifier String   @db.Text
-  value      String   @db.Text
+  identifier String
+  value      String
   expiresAt  DateTime
   createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt
+  updatedAt  DateTime @updatedAt
 
+  @@index([identifier])
   @@map("verification")
 }
 
 model Product {
-  id          Int            @id @default(autoincrement())
-  name        String
-  shortDescription String
-  price       Float
-  brandDesc1  String
-  brandDesc2  String
-  brandDesc3  String
-  tag         String
-  stock       Int            @default(0)
-  categoryId  Int
-  images      ProductImage[]
-  Category    Category       @relation(fields: [categoryId], references: [id])
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id               Int            @id @default(autoincrement())
+  name             String
+  shortdescription String
+  price            Float
+  branddesc1       String
+  branddesc2       String
+  branddesc3       String
+  tag              String
+  stock            Int            @default(0)
+  categoryid       Int
+  images           Productimage[]
+  category         Category       @relation(fields: [categoryid], references: [id])
+  createdat        DateTime       @default(now())
+  updatedat        DateTime       @updatedAt
 }
 
-model ProductImage {
+model Productimage {
   id        Int      @id @default(autoincrement())
   url       String
-  isMain   Boolean?  @default(false) 
-  isLeft   Boolean?  @default(false)
-  productId Int
-  Product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  ismain    Boolean? @default(false)
+  isleft    Boolean? @default(false)
+  productid Int
+  product   Product  @relation(fields: [productid], references: [id], onDelete: Cascade)
 }
 
 model Category {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  products  Product[]
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
 }

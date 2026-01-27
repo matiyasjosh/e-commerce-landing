@@ -44,3 +44,6 @@ next-env.d.ts
 
 # pnpm-workspace.yaml*
 notes.md
+/app/generated/prisma
+
+/lib/generated/prisma
