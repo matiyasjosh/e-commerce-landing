@@ -8,7 +8,7 @@ export function AuthErrorDisplay({ error }: AuthErrorDisplayProps) {
   if (!error) return null
 
   return (
-    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+    <div className="absolute left-150 w-60 bg-red-50 border border-red-200 rounded-lg p-4">
       <div className="flex">
         <div className="flex-shrink-0">
           <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">

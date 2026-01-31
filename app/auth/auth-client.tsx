@@ -4,10 +4,11 @@ import type React from "react";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { signIn, signInSocial, signUp } from "@/lib/actions/auth-actions";
+import { signInSocial } from "@/lib/actions/auth-actions";
 import { SignInView } from "@/components/auth-sign-in-view";
 import { SignUpView } from "@/components/auth-sign-up-view";
 import { AuthErrorDisplay } from "@/components/auth-error-display";
+import { authClient } from "@/lib/auth-client";
 
 interface AuthClientPageProps {
   isSignIn: boolean;
@@ -54,21 +55,34 @@ export default function AuthClientPage({
 
     try {
       if (isSignIn) {
-        const result = await signIn(formEmail, formPassword);
-        if (!result.user) {
-          setError("Invalid email or password");
-        } else {
-          // Navigate client-side immediately after successful sign in
-          router.push("/shop");
+        await authClient.signIn.email({
+          email: formEmail, password: formPassword
+        },{
+          onSuccess: () => {
+            router.push("/shop");
+            router.refresh();
+          },
+          onError: (ctx) => {
+            setError(ctx.error.message);
+          }
         }
-      } else {
-        const result = await signUp(formEmail, formPassword, formName);
-        if (!result.user) {
-          setError("Failed to create account");
-        } else {
-          // Navigate client-side immediately after successful sign up
-          router.push("/shop");
+        )
+      }
+      else {
+        await authClient.signUp.email({ 
+          email: formEmail,
+          name: formName,
+          password: formPassword
+        }, {
+          onSuccess: () => {
+            router.push("/auth?view=signin")
+            router.refresh()
+          }, 
+          onError: (ctx) => {
+            setError(ctx.error.message)
+          }
         }
+      )
       }
     } catch (err) {
       setError(
@@ -86,15 +100,25 @@ export default function AuthClientPage({
     setIsSignIn(initialIsSignIn);
   }, [initialIsSignIn]);
 
+  useEffect(() => {
+    // start timer
+    const timer = setTimeout(() => {
+      setError("");
+    }, 3000);
+
+    // cleanup when component unmounts
+    return () => clearTimeout(timer);
+  }, [error]);
+
   return (
     <>
+      <AuthErrorDisplay error={error} />
       {isSignIn ? (
         <SignInView onSubmit={handleEmailAuth} isLoading={isLoading} handleSocial={handleSocialAuth} />
       ) : (
         <SignUpView onSubmit={handleEmailAuth} isLoading={isLoading} handleSocial={handleSocialAuth}/>
       )}
 
-      <AuthErrorDisplay error={error} />
     </>
   );
 }
