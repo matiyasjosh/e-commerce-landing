@@ -4,13 +4,13 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Search, ShoppingBag } from "lucide-react";
-import { signOut } from "@/lib/actions/auth-actions";
+import UserDropdown from "./user-dropdown";
+import { authClient } from "@/lib/auth-client";
 
-type Session = any;
-
-const Navbar = ({ session }: { session: Session | null }) => {
+const Navbar = () => {
+  const { data: session } =  authClient.useSession();
   return (
-    <header className="border-b">
+    <header className="w-full bg-transparent">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-[#D4FF00] flex items-center justify-center">
@@ -20,26 +20,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
             DEMOBAZA
           </span>
         </Link>
-        <nav className="hidden md:flex items-center gap-8">
-          <Link
-            href="#"
-            className="text-sm uppercase tracking-wider hover:text-muted-foreground transition-colors"
-          >
-            Woman
-          </Link>
-          <Link
-            href="#"
-            className="text-sm uppercase tracking-wider hover:text-muted-foreground transition-colors"
-          >
-            Man
-          </Link>
-          <Link
-            href="#"
-            className="text-sm uppercase tracking-wider hover:text-muted-foreground transition-colors"
-          >
-            Collections
-          </Link>
-        </nav>
+        
         <div className="flex items-center gap-4">
           {!session ? (
             <>
@@ -58,12 +39,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
             <>
               <Search className="w-5 h-5 cursor-pointer text-gray-400 hover:text-gray-600" />
               <ShoppingBag className="w-5 h-5 cursor-pointer text-gray-400 hover:text-gray-600" />
-              <Button
-                onClick={() => signOut()}
-                className="bg-[#D4FF00] hover:bg-[#D4FF00]/90 text-foreground uppercase tracking-wider"
-              >
-                Sign Out
-              </Button>
+              <UserDropdown session={session} />
             </>
           )}
         </div>
