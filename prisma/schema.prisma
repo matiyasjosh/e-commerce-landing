@@ -23,6 +23,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  cart          Cart?
 
   @@unique([email])
   @@map("user")
@@ -91,6 +92,7 @@ model Product {
   category         Category       @relation(fields: [categoryid], references: [id])
   createdat        DateTime       @default(now())
   updatedat        DateTime       @updatedAt
+  cartItems        CartItem[]
 }
 
 model Productimage {
@@ -106,4 +108,40 @@ model Category {
   id       Int       @id @default(autoincrement())
   name     String    @unique
   products Product[]
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  // Link to Better Auth User (Optional for Guests)
+  userId    String?    @unique // One active cart per user
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Link to Guest (The UUID we will store in an HTTP-only cookie)
+  guestId   String?    @unique
+  
+  // Items in the cart
+  items     CartItem[]
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+// Individual Items in the Cart
+model CartItem {
+  id        String   @id @default(uuid())
+  
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+
+  quantity  Int      @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Important: This ensures a product can't be added twice to the same cart
+  // Instead, you would increment the quantity of the existing CartItem
+  @@unique([cartId, productId])
 }
