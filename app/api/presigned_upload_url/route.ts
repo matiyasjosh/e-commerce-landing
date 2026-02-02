@@ -1,7 +1,7 @@
 // app/api/presigned-upload-url/route.ts
 import { NextResponse } from 'next/server';
-import minioClient from '@/lib/minioClient'; // Adjust path based on your lib folder location
-import { requireAuth } from '@/lib/serverAuth';
+import minioClient from '@/lib/minio-client'; // Adjust path based on your lib folder location
+import { requireAuth } from '@/lib/server-auth';
 import { v4 as uuid } from 'uuid';
 
 export async function POST(request: Request) {
