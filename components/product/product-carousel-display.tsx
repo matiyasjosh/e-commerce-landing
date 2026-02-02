@@ -1,6 +1,5 @@
 'use client';
 
-import { motion, AnimatePresence } from "framer-motion";
 import ProductInfo from "./product-info";
 import ProductDescription from "./product-description";
 import QuantitySelector from "./quantity-selector";
@@ -9,7 +8,7 @@ import ProductImages from "./product-images";
 import SocialIcons from "./social-icon";
 
 interface Product {
-  id: string;
+  id: number;
   name: string;
   price: string;
   shortDescription: string;
@@ -56,6 +55,7 @@ export default function ProductCarouselDisplay({
                   {/* Quantity Selector */}
                   <div className="absolute left-10/16 top-10/11 transform -translate-y-1/12 z-30 w-80">
                     <QuantitySelector
+                      productId={product.id}
                       quantity={quantity}
                       setQuantity={setQuantity}
                       price={product.price}

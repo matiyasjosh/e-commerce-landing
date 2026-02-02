@@ -1,16 +1,23 @@
 "use client";
 
+import { addToCart } from "@/lib/actions/cart-actions";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus, ChevronRight } from "lucide-react";
 
 interface QuantitySelectorProps {
+  productId: number;
   quantity: number;
   setQuantity: (quantity: number) => void;
   price: string;
   currentProduct: number;
 }
 
+async function handleBuy(productId: number) {
+  await addToCart(productId);
+}
+
 export default function QuantitySelector({
+  productId,
   quantity,
   setQuantity,
   price,
@@ -51,15 +58,15 @@ export default function QuantitySelector({
           transition={{ duration: 0.4, delay: 0.3 }}
           className="bg-[#E2FF58] transition-colors duration-200 cursor-pointer group opacity-50 h-24"
         >
-          <div className="flex items-center justify-around p-4 pt-8">
-            <div>
+          <div className="flex items-center justify-around p-4 pt-8 cursor-pointer">
+            <button onClick={() => handleBuy(productId)}>
               <span className="text-black font-bold text-sm">
                 BUY NOW |
               </span>
               <span className="text-black font-bold text-lg ml-2">
                 {price}
               </span>
-            </div>
+            </button>
             <ChevronRight className="w-5 h-5 text-black group-hover:translate-x-1 transition-transform duration-200" />
           </div>
         </motion.div>

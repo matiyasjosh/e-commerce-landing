@@ -1,14 +1,16 @@
-"use client";
+// "use client";
 
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Search, ShoppingBag } from "lucide-react";
-import UserDropdown from "./user-dropdown";
-import { authClient } from "@/lib/auth-client";
+import UserDropdown from "../user-dropdown";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { CartIcon } from "./cart-icon";
 
-const Navbar = () => {
-  const { data: session } =  authClient.useSession();
+const Navbar = async () => {
+  const session = await auth.api.getSession({ headers: await headers() }); 
   return (
     <header className="w-full bg-transparent">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -22,6 +24,7 @@ const Navbar = () => {
         </Link>
         
         <div className="flex items-center gap-4">
+          <CartIcon userId={session?.user?.id} />
           {!session ? (
             <>
               <Link href="/auth?view=signin">
@@ -38,7 +41,6 @@ const Navbar = () => {
           ) : (
             <>
               <Search className="w-5 h-5 cursor-pointer text-gray-400 hover:text-gray-600" />
-              <ShoppingBag className="w-5 h-5 cursor-pointer text-gray-400 hover:text-gray-600" />
               <UserDropdown session={session} />
             </>
           )}
